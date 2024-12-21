@@ -1,0 +1,114 @@
+.card {
+    border-radius: 8px;
+}
+
+.card-body {
+    line-height: 1.6;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Base styles for the button */
+.save-btn {
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Saved state styles */
+.saved-bg {
+    background-color: #4caf50;
+    /* Green for saved */
+    color: white;
+}
+
+.saved-bg:hover {
+    color: white;
+    background-color: #388e3c;
+    /* Darker green on hover */
+}
+
+/* Unsaved state styles */
+.unsaved-bg {
+    background-color: red;
+    /* Red for unsaved */
+    color: white;
+}
+
+.unsaved-bg:hover {
+    color: white;
+    background-color: #b71c1c;
+    /* Darker red on hover */
+}
+
+.job-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.like-button,
+.dislike-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Like Button */
+.like-button {
+    background-color: #34A853;
+}
+
+.like-button:hover {
+    background-color: #2E7D32;
+}
+
+/* Dislike Button */
+.dislike-button {
+    background-color: #EA4335;
+}
+
+.dislike-button:hover {
+    background-color: #B71C1C;
+}
+
+
+/* Small devices */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .save-btn {
+        padding: 10px 8px;
+        font-size: 14px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+/* Medium devices */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .styled-buttons .save-btn {
+        background-color: blue;
+        transform: translateY(-2px);
+    }
+}
+
+/* Large devices */
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+    .styled-buttons .save-btn {
+        background-color: yellow;
+        transform: translateY(-2px);
+    }
+}

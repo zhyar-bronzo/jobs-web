@@ -1,0 +1,93 @@
+.wave-container {
+    position: relative;
+    background: linear-gradient(135deg, #6c63ff, #48c6ef);
+    height:200px;
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+    z-index: 1; /* Ensure the wave is behind the card */
+}
+
+.wave-container svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+
+.verify-email-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px; /* For mobile responsiveness */
+}
+
+.card {
+    width: 100%;
+    max-width: 700px; /* Wider card */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    overflow: hidden; /* To ensure the wave stays within the card */
+}
+
+.card-body {
+    position: relative;
+    z-index: 20;
+    padding: 15px 15px; /* Reduced padding */
+    margin-top: -180px; /* Move content closer to the wave */
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text strong {
+    color: #007bff;
+}
+
+.actions {
+    margin-top: 20px;
+}
+
+.btn-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+.btn-success {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838
+}
+
+.btnlink{
+    color: black;
+    text-decoration: none;
+}
+
+.btnlink:hover{
+    text-decoration: underline;
+    color: rgb(56, 54, 54);
+}
+
+.spanemail{
+    color: black;
+    font-weight: normal;
+    text-decoration: none;
+}
