@@ -50,14 +50,23 @@
 }
 
 .cardbg {
+<<<<<<< HEAD
     background: #191D21;
     color: white;
+=======
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+>>>>>>> 4f3cf07 (nav)
     border-radius: 10px;
 }
 
 .table-custom {
+<<<<<<< HEAD
     background: #191D21;
     color: white;
+=======
+    background: linear-gradient(135deg, #f2f2f2, #d9d9d9);
+    color: #000;
+>>>>>>> 4f3cf07 (nav)
     border-radius: 8px;
     overflow: hidden;
 }
@@ -69,24 +78,40 @@
 }
 
 .table-custom thead th {
+<<<<<<< HEAD
     background: #191D21;
+=======
+    background: black;
+>>>>>>> 4f3cf07 (nav)
     color: white;
     padding: 12px;
     font-weight: bold;
 }
 
 .table-custom tbody tr:nth-child(odd) {
+<<<<<<< HEAD
     background-color: #191D21;
+=======
+    background-color: #ffffff;
+>>>>>>> 4f3cf07 (nav)
     /* White for odd rows */
 }
 
 .table-custom tbody tr:nth-child(even) {
+<<<<<<< HEAD
     background-color: #22272b;
+=======
+    background-color: #f9f9f9;
+>>>>>>> 4f3cf07 (nav)
     /* Light grey for even rows */
 }
 
 .table-custom tbody tr:hover {
+<<<<<<< HEAD
     background-color: #202327;
+=======
+    background-color: #e6e6e6;
+>>>>>>> 4f3cf07 (nav)
     /* Light grey hover effect */
 }
 
@@ -98,13 +123,21 @@
 .custom-table th,
 .custom-table td {
     padding: 10px;
+<<<<<<< HEAD
     border: 1px solid #4b4545;
+=======
+    border: 1px solid #ddd;
+>>>>>>> 4f3cf07 (nav)
     text-align: center;
 }
 
 .custom-table th {
     padding: 10px;
+<<<<<<< HEAD
     background-color: #191D21;
+=======
+    background-color: black;
+>>>>>>> 4f3cf07 (nav)
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     color: white;
@@ -112,7 +145,11 @@
 
 .custom-table td {
     padding: 10px;
+<<<<<<< HEAD
     background-color: #191D21;
+=======
+    background-color: #f2f2f2;
+>>>>>>> 4f3cf07 (nav)
 }
 
 .custom-button {
@@ -228,7 +265,11 @@
 }
 
 .theline {
+<<<<<<< HEAD
     background: #191D21;
+=======
+    background: #f6f2f2;
+>>>>>>> 4f3cf07 (nav)
 }
 
 /* From Uiverse.io by Jedi-hongbin */
@@ -247,11 +288,14 @@
     background: #e3e1e1;
 }
 
+<<<<<<< HEAD
 h2 {
     font-size: 2rem !important;
     font-weight: bold !important;
 }
 
+=======
+>>>>>>> 4f3cf07 (nav)
 .back-button>svg {
     margin-right: 5px;
     margin-left: 5px;
@@ -266,7 +310,11 @@ h2 {
 }
 
 .back-button:hover {
+<<<<<<< HEAD
     background: #fffefe;
+=======
+    box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
+>>>>>>> 4f3cf07 (nav)
     transform: translateY(-2px);
 }
 

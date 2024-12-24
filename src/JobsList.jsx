@@ -6,10 +6,15 @@ import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
 import axios from 'axios';
 import { GiHamburgerMenu } from 'react-icons/gi';
+<<<<<<< HEAD
 import './Navbar.css';
 import './jobslist.css'
 import { Slide, ToastContainer, toast } from 'react-toastify';
 import '../node_modules/react-toastify/dist/ReactToastify.css';
+=======
+import { FaCaretDown } from 'react-icons/fa';
+import './Navbar.css';
+>>>>>>> 4f3cf07 (nav)
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -93,12 +98,24 @@ const JobsList = () => {
         language: [],
         gender: ''
     });
+<<<<<<< HEAD
     const [filteredJob, setFilteredJob] = useState([]);
     const [showSidebar, setShowSidebar] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [result, setResult] = useState(0);
     const toggleSidebar = () => setShowSidebar(!showSidebar);
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+=======
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const toggleSidebar = () => setShowSidebar(!showSidebar);
+    const toggleDropdown = (event) => {
+        event.stopPropagation();
+        console.log('clicked');
+        console.log('showDropdown:', showDropdown);
+        setShowDropdown(!showDropdown);
+    };
+>>>>>>> 4f3cf07 (nav)
 
     const deleteCookie = (name) => {
         document.cookie = `${name}=; Max-Age=0; path=/;`;
@@ -423,13 +440,20 @@ const JobsList = () => {
     if (error) return <p>Error: {error}</p>;
 
     return (
+<<<<<<< HEAD
         <div className='bgbody'>
             <nav style={{ padding: '20px' }} className="navbar">
                 <a className='text-decoration-none' href="/jobs"><div className="navbar-logo">Job Finder</div></a>
+=======
+        <div>
+            <nav className="navbar">
+                <div className="navbar-logo">Job Finder</div>
+>>>>>>> 4f3cf07 (nav)
 
                 {/* For larger screens, navigation links */}
                 <div className="navbar-links">
                     <a href="/">Home</a>
+<<<<<<< HEAD
                     <a href="/jobs">Jobs</a>
                     <a href="/aboutposting">Post a Job</a>
                     <a href="#cv">VIP</a>
@@ -468,6 +492,33 @@ const JobsList = () => {
                     </div>
                 </div>
 
+=======
+                    <a href="#jobs">Jobs</a>
+                    <a href="#post">Post a Job</a>
+                    <a href="#cv">Create a CV</a>
+                    <a href="#about">About Us</a>
+                </div>
+
+                {/* User section with dropdown */}
+                <div className="user-section" onClick={toggleDropdown}>
+                    <span>Zhyar</span>
+                    <FaCaretDown className="dropdown-arrow" />
+                    {showDropdown && (
+                        <div className="dropdown-menu">
+                            <a href="#">
+                                <i class="fa-solid fa-user me-2"></i> Your Profile
+                            </a>
+                            <a href="#">
+                                <i class="fa-solid fa-bookmark me-2"></i> Your Favorites
+                            </a>
+                            <a href="#">
+                                <i className="fas fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </div>
+                    )}
+                </div>
+
+>>>>>>> 4f3cf07 (nav)
                 {/* Hamburger menu for smaller screens */}
                 <GiHamburgerMenu
                     className="hamburger-icon"
@@ -477,27 +528,47 @@ const JobsList = () => {
 
                 {/* Sidebar for mobile */}
                 <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+<<<<<<< HEAD
                     <div style={{ marginRight: '20px' }} className="sidebar-header">
+=======
+                    <div className="sidebar-header">
+>>>>>>> 4f3cf07 (nav)
                         <span></span>
                         <i className="fas fa-times close-icon" onClick={toggleSidebar}></i>
                     </div>
                     <a href="#home">
+<<<<<<< HEAD
                         <i className="fa-solid fa-house me-2"></i> Home
+=======
+                        <i class="fa-solid fa-house me-2"></i> Home
+>>>>>>> 4f3cf07 (nav)
                     </a>
                     <a href="#jobs">
                         <i className="fas fa-briefcase me-2"></i> Jobs
                     </a>
                     <a href="#post">
+<<<<<<< HEAD
                         <i className="fa-solid fa-plus me-2"></i> Post a Job
+=======
+                        <i class="fa-solid fa-plus me-2"></i> Post a Job
+>>>>>>> 4f3cf07 (nav)
                     </a>
                     <a href="#cv">
                         <i className="fas fa-file-alt me-2"></i> Create a CV
                     </a>
+<<<<<<< HEAD
                     <a href="/aboutus">
+=======
+                    <a href="#about">
+>>>>>>> 4f3cf07 (nav)
                         <i className="fas fa-info-circle me-2"></i> About Us
                     </a>
                 </div>
             </nav>
+<<<<<<< HEAD
+=======
+            {/* Filter Offcanvas */}
+>>>>>>> 4f3cf07 (nav)
 
             <div
                 className="offcanvas offcanvas-end"
@@ -543,7 +614,30 @@ const JobsList = () => {
                 </div>
             </div>
 
+<<<<<<< HEAD
             <h2 className='text-center text-white mt-5'>begin the seach for your dream job</h2>
+=======
+            <div style={{ position: 'relative', top: '80px' }} className="d-flex align-items-center mb-3 mt-5">
+                <input
+                    type="text"
+                    className="form-control py-2 border-2 shadow-sm me-3"
+                    placeholder="Search by title"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    style={{ maxWidth: '400px', marginLeft: '380px' }}
+                />
+                <button
+                    style={{ width: '50px' }}
+                    className="btn btn-primary py-2 shadow-sm"
+                    type="button"
+                    onClick={handleFilterSubmit}
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#filterOffcanvas"
+                >
+                    <FaFilter />
+                </button>
+            </div>
+>>>>>>> 4f3cf07 (nav)
 
             <div className='text-center'>
                 <div className="d-flex align-items-center justify-content-center mb-3 mt-5">
@@ -574,6 +668,7 @@ const JobsList = () => {
             </div>
             <div className="container mt-5">
                 <div className="row">
+<<<<<<< HEAD
                     {filteredJob.length > 0 ? (
                         filteredJob.map((job) => (
                             <div className="col-md-6 mb-4" key={job._id}>
@@ -593,6 +688,18 @@ const JobsList = () => {
                                         <p style={{ fontSize: '17px' }} className="card-text">
                                             <i style={{ color: '#FFD700' }} class="fas fa-building me-2"></i> <b> Company  </b> : {job.company}
                                             <span className='ms-3'><i style={{ color: '#FF0000' }} class="fa-solid fa-location-dot me-2"></i> <b>Location </b> : {job.location}</span>
+=======
+                    {filteredJobs.length > 0 ? (
+                        filteredJobs.map((job) => (
+                            <div className="col-md-4 mb-4" key={job._id}>
+                                <div style={{ backgroundColor: '#1e293b', color: 'white' }} className="card">
+                                    <div className="card-body mt-3 card-fade-border" style={{ height: '300px', overflowY: 'hidden' }}>
+                                        <h5 className="card-title mb-4">
+                                            {job.title}
+                                        </h5><br />
+                                        <p className="card-text">
+                                            <FaBuilding /> <b>Company : </b> {job.company}
+>>>>>>> 4f3cf07 (nav)
                                         </p>
                                         <p style={{ fontSize: '17px' }} className="card-text mt-2">
                                             <i style={{ color: '#4682B4' }} class="fa-solid fa-briefcase me-2"></i>
