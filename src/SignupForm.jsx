@@ -8,7 +8,7 @@ import useAuthRedirect from './ChekingAuth';
 import './SignupForm.css';
 
 const SignupForm = () => {
-    useAuthRedirect();
+    // useAuthRedirect();
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({

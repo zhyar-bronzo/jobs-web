@@ -4,7 +4,6 @@ import { FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaBriefcase, FaFileAlt, FaPl
 import styled from 'styled-components';
 import axios from 'axios';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
-import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 

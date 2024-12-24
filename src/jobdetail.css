@@ -11,42 +11,6 @@
     font-weight: 600;
 }
 
-/* Base styles for the button */
-.save-btn {
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-}
-
-/* Saved state styles */
-.saved-bg {
-    background-color: #4caf50;
-    /* Green for saved */
-    color: white;
-}
-
-.saved-bg:hover {
-    color: white;
-    background-color: #388e3c;
-    /* Darker green on hover */
-}
-
-/* Unsaved state styles */
-.unsaved-bg {
-    background-color: red;
-    /* Red for unsaved */
-    color: white;
-}
-
-.unsaved-bg:hover {
-    color: white;
-    background-color: #b71c1c;
-    /* Darker red on hover */
-}
-
 .job-buttons {
     display: flex;
     gap: 20px;
@@ -85,30 +49,253 @@
     background-color: #B71C1C;
 }
 
+.cardbg {
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    border-radius: 10px;
+}
 
-/* Small devices */
+.table-custom {
+    background: linear-gradient(135deg, #f2f2f2, #d9d9d9);
+    color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-custom th,
+.table-custom td {
+    background: transparent;
+    color: inherit;
+}
+
+.table-custom thead th {
+    background: black;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+}
+
+.table-custom tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+    /* White for odd rows */
+}
+
+.table-custom tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Light grey for even rows */
+}
+
+.table-custom tbody tr:hover {
+    background-color: #e6e6e6;
+    /* Light grey hover effect */
+}
+
+.custom-table {
+    width: 400px;
+    border-collapse: collapse;
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.custom-table th {
+    padding: 10px;
+    background-color: black;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: white;
+}
+
+.custom-table td {
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.custom-button {
+    padding: 10px 30px;
+    background-color: #F44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.custom-button:hover {
+    background-color: #D32F2F;
+}
+
+.share-button {
+    padding: 10px 30px;
+    background-color: #07cf5e;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.share-button:hover {
+    background-color: #11701f;
+}
+
+/* save */
+.saved-bg {
+    padding: 10px 30px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.saved-bg:hover {
+    color: white;
+    background-color: #388e3c;
+}
+
+.unsaved-bg {
+    padding: 10px 30px;
+    background-color: red;
+    /* Red for unsaved */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.unsaved-bg:hover {
+    color: white;
+    background-color: #b71c1c;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    position: relative;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.theline {
+    background: #f6f2f2;
+}
+
+/* From Uiverse.io by Jedi-hongbin */
+.back-button {
+    display: flex;
+    height: 3em;
+    width: 100px;
+    align-items: center;
+    justify-content: center;
+    background-color: #eeeeee4b;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    border: none;
+    background: #e3e1e1;
+}
+
+.back-button>svg {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    transition: all 0.4s ease-in;
+}
+
+.back-button:hover>svg {
+    font-size: 1.2em;
+    transform: translateX(-5px);
+}
+
+.back-button:hover {
+    box-shadow: 9px 9px 33px #d1d1d1, -9px -9px 33px #ffffff;
+    transform: translateY(-2px);
+}
+
 @media only screen and (min-width: 481px) and (max-width: 768px) {
-    .save-btn {
-        padding: 10px 8px;
+
+    .like-button,
+    .dislike-button {
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
         font-size: 14px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease-in-out;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .like-button {
+        margin-right: -10px;
     }
 }
 
 /* Medium devices */
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
+/* @media only screen and (min-width: 769px) and (max-width: 1024px) {
     .styled-buttons .save-btn {
         background-color: blue;
         transform: translateY(-2px);
     }
-}
+} */
 
 /* Large devices */
-@media only screen and (min-width: 1025px) and (max-width: 1200px) {
+/* @media only screen and (min-width: 1025px) and (max-width: 1200px) {
     .styled-buttons .save-btn {
         background-color: yellow;
         transform: translateY(-2px);
     }
-}
+} */

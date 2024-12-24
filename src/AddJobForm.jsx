@@ -190,10 +190,10 @@ const AddJobForm = () => {
             setMessage('Job description is required!');
             return;
         }
-        setLoading(true);
         setMessage('');
 
         try {
+            console.log('here :');
             const response = await fetch('http://localhost:3500/addjob', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -205,10 +205,16 @@ const AddJobForm = () => {
                     salary: Number(formData.salary),
                     currency: formData.currency,
                 }),
+                credentials: 'include'
             });
 
+            console.log('here2 :');
+
+            // Check for successful response and parse JSON
             if (response.ok) {
-                setMessage('Job added successfully!');
+                const data = await response.json();
+                console.log('Response data:', data);
+                setMessage(data.message);
                 setFormData({
                     title: '',
                     description: '',
@@ -229,13 +235,13 @@ const AddJobForm = () => {
                     gender: 'no-gender-specified',
                 });
             } else {
+                const errorData = await response.json();
+                console.log('Error response:', errorData);
                 setMessage('Failed to add job. Please try again.');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error.message);
             setMessage('An error occurred while adding the job.');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -398,11 +404,6 @@ const AddJobForm = () => {
                                         </div>
                                     </div>
 
-                                    {/* Skills */}
-                                    <div className="col-md-6 mb-3">
-                                        {renderInputField('skils', 'text', 'e.g, HTML,CSS,JavaScript', 'Skills (optional)', { maxLength: 100, required: false }, <FaTools />)}
-                                    </div>
-
                                     {/* Company Email */}
                                     <div className="col-md-6 mb-3">
                                         {renderInputField('companyEmail', 'email', 'e.g, example@gmail.com', 'Company Email (optional)', {
@@ -445,7 +446,6 @@ const AddJobForm = () => {
                                             id="jobType"
                                             value={formData.jobType}
                                             onChange={handleChange}
-                                            required
                                         >
                                             <option value="">Select a type</option>
                                             {jobTypes.map((ind) => (
@@ -546,8 +546,8 @@ const AddJobForm = () => {
                                 <p className='alert alert-warning text-center'>jobs should take anywhere from 1 hour to 24 hours to be approved</p>
                                 {/* Submit Button */}
                                 <div className='bgg'>
-                                    <button type="submit" className='btn-submit' disabled={loading}>
-                                        {loading ? 'Submitting...' : 'Submit'}
+                                    <button type="submit" className='btn-submit'>
+                                        Submit
                                     </button>
                                 </div>
                             </form>

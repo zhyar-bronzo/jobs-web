@@ -4,8 +4,10 @@ import { FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaBriefcase, FaFileAlt, FaFi
 import styled from 'styled-components';
 import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
-import './App.css';
 import axios from 'axios';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { FaCaretDown } from 'react-icons/fa';
+import './Navbar.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 
@@ -74,7 +76,6 @@ const JobsList = () => {
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [collapsedSections, setCollapsedSections] = useState({});
     const navigate = useNavigate();
@@ -90,13 +91,14 @@ const JobsList = () => {
         language: [],
         gender: ''
     });
-
-    const toggleSidebar = () => {
-        setSidebarOpen(!isSidebarOpen);
-    };
-
-    const closeSidebar = () => {
-        setSidebarOpen(false);
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const toggleSidebar = () => setShowSidebar(!showSidebar);
+    const toggleDropdown = (event) => {
+        event.stopPropagation();
+        console.log('clicked');
+        console.log('showDropdown:', showDropdown);
+        setShowDropdown(!showDropdown);
     };
 
     const deleteCookie = (name) => {
@@ -364,56 +366,67 @@ const JobsList = () => {
 
     return (
         <div>
-            <header>
-                <nav className="navbar">
-                    {/* Hamburger Menu */}
-                    <div className="hamburger-menu" onClick={toggleSidebar}>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                    </div>
+            <nav className="navbar">
+                <div className="navbar-logo">Job Finder</div>
 
-                    {/* Text in the middle */}
-                    <div style={{ color: 'white' }} className="navbar-text">Job Finder</div>
-
-                    {/* Logo on the right */}
-                    <div className="logo">
-                        <img src="logo.png" alt="Logo" width="100" height="100" />
-                    </div>
-                </nav>
-
-                {/* Sidebar */}
-                <div className={`sidebar ${isSidebarOpen ? 'active' : ''}`}>
-                    <div className="close-btn" onClick={closeSidebar}>×</div> {/* Cross Button */}
-                    <ul>
-                        {user ? (
-                            <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/aboutposting"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <li><a href="#"><FaInfoCircle /> Account Settings</a></li>
-                                <li><a className="btn btn-danger" onClick={logout} href="/"><FaInfoCircle /> Logout</a></li>
-                            </>
-                        ) : (
-                            <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/aboutposting"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <div className="auth-buttons">
-                                    <button className="auth-btn signup-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/signup">Signup</a></button>
-                                    <button className="auth-btn signin-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/login">Sign In</a></button>
-                                </div>
-                            </>
-                        )}
-                    </ul>
+                {/* For larger screens, navigation links */}
+                <div className="navbar-links">
+                    <a href="/">Home</a>
+                    <a href="#jobs">Jobs</a>
+                    <a href="#post">Post a Job</a>
+                    <a href="#cv">Create a CV</a>
+                    <a href="#about">About Us</a>
                 </div>
-                {/* Overlay for closing sidebar when clicked outside */}
-                {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
-            </header>
+
+                {/* User section with dropdown */}
+                <div className="user-section" onClick={toggleDropdown}>
+                    <span>Zhyar</span>
+                    <FaCaretDown className="dropdown-arrow" />
+                    {showDropdown && (
+                        <div className="dropdown-menu">
+                            <a href="#">
+                                <i class="fa-solid fa-user me-2"></i> Your Profile
+                            </a>
+                            <a href="#">
+                                <i class="fa-solid fa-bookmark me-2"></i> Your Favorites
+                            </a>
+                            <a href="#">
+                                <i className="fas fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </div>
+                    )}
+                </div>
+
+                {/* Hamburger menu for smaller screens */}
+                <GiHamburgerMenu
+                    className="hamburger-icon"
+                    onClick={toggleSidebar}
+                    size={35}
+                />
+
+                {/* Sidebar for mobile */}
+                <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+                    <div className="sidebar-header">
+                        <span></span>
+                        <i className="fas fa-times close-icon" onClick={toggleSidebar}></i>
+                    </div>
+                    <a href="#home">
+                        <i class="fa-solid fa-house me-2"></i> Home
+                    </a>
+                    <a href="#jobs">
+                        <i className="fas fa-briefcase me-2"></i> Jobs
+                    </a>
+                    <a href="#post">
+                        <i class="fa-solid fa-plus me-2"></i> Post a Job
+                    </a>
+                    <a href="#cv">
+                        <i className="fas fa-file-alt me-2"></i> Create a CV
+                    </a>
+                    <a href="#about">
+                        <i className="fas fa-info-circle me-2"></i> About Us
+                    </a>
+                </div>
+            </nav>
             {/* Filter Offcanvas */}
 
             <div
@@ -470,6 +483,7 @@ const JobsList = () => {
                     style={{ maxWidth: '400px', marginLeft: '380px' }}
                 />
                 <button
+                    style={{ width: '50px' }}
                     className="btn btn-primary py-2 shadow-sm"
                     type="button"
                     onClick={handleFilterSubmit}
@@ -486,9 +500,9 @@ const JobsList = () => {
                         filteredJobs.map((job) => (
                             <div className="col-md-4 mb-4" key={job._id}>
                                 <div style={{ backgroundColor: '#1e293b', color: 'white' }} className="card">
-                                    <div className="card-body card-fade-border" style={{ height: '300px', overflowY: 'hidden' }}>
+                                    <div className="card-body mt-3 card-fade-border" style={{ height: '300px', overflowY: 'hidden' }}>
                                         <h5 className="card-title mb-4">
-                                           {job.title}
+                                            {job.title}
                                         </h5><br />
                                         <p className="card-text">
                                             <FaBuilding /> <b>Company : </b> {job.company}

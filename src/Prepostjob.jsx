@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaBriefcase, FaFileAlt, FaFilter, FaPlusCircle, FaHome, FaInfoCircle } from 'react-icons/fa';
+import {  FaBriefcase, FaFileAlt, FaPlusCircle, FaHome, FaInfoCircle } from 'react-icons/fa';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
-import styled from 'styled-components';
 import './Prepostjob.css';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
 
 const Prepostjob = () => {
@@ -80,7 +79,7 @@ const Prepostjob = () => {
             const role = await axios.get('http://localhost:3500/checkroles', { withCredentials: true });
             const userRole = role.data.roles;
             console.log(userRole);
-            if (userRole === 'EmployeeSeeker') {
+            if (userRole === 'employeeSeeker') {
                 setIsEmployeeSeeker(true);
                 setCanPostJob(true); // Allow posting job
             } else {
@@ -153,7 +152,7 @@ const Prepostjob = () => {
                     </p>
 
                     <button
-                        className="btn btn-primary btn-lg mt-3 px-4 py-2 shadow-sm transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
+                        className="btn w-25 btn-primary btn-lg mt-3 px-4 py-2 shadow-sm transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
                         onClick={handlePostJobClick}
                         disabled={!canPostJob}
                         style={{
