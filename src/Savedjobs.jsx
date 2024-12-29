@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaBriefcase, FaFileAlt, FaPlusCircle, FaHome, FaInfoCircle } from 'react-icons/fa';
 import styled from 'styled-components';
 import axios from 'axios';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import './Navbar.css';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import '../node_modules/react-toastify/dist/ReactToastify.css';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -73,16 +76,13 @@ const Savedjobs = () => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
+    const [savedJobs, setSavedJobs] = useState([]);
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const toggleSidebar = () => {
-        setSidebarOpen(!isSidebarOpen);
-    };
-
-    const closeSidebar = () => {
-        setSidebarOpen(false);
-    };
+    const toggleSidebar = () => setShowSidebar(!showSidebar);
+    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
     const deleteCookie = (name) => {
         document.cookie = `${name}=; Max-Age=0; path=/;`;
@@ -150,8 +150,44 @@ const Savedjobs = () => {
             }
         };
 
+        const checkSavedStatus = async () => {
+            try {
+                const response = await axios.get("http://localhost:3500/favoritejobs", { withCredentials: true });
+                const savedJobs = response.data.foundJobs.map((job) => job._id);
+                setSavedJobs(savedJobs);
+            } catch (err) {
+                console.error("Error fetching saved jobs:", err);
+            }
+        };
+
         fetchJobs();
+        checkSavedStatus();
     }, []);
+
+    const isJobSaved = (jobId) => savedJobs.includes(jobId);
+
+    const saveJobs = async (jobId) => {
+        try {
+            const response = await axios.post("http://localhost:3500/savedjobs", { jobId }, { withCredentials: true });
+            if (response.status === 200) {
+                setSavedJobs((prev) => [...prev, jobId]);
+                toast.success("Job saved successfully", { transition: Slide });
+            }
+        } catch (error) {
+            console.error("Error saving job:", error);
+        }
+    };
+
+    const unSaveJobs = async (jobId) => {
+        try {
+            const response = await axios.post("http://localhost:3500/unsavejob", { jobId }, { withCredentials: true });
+            if (response.status === 200) {
+                setSavedJobs((prev) => prev.filter((id) => id !== jobId));
+            }
+        } catch (error) {
+            console.error("Error unsaving job:", error);
+        }
+    };
 
 
     const formatDescription = (description) => {
@@ -186,78 +222,117 @@ const Savedjobs = () => {
 
     return (
         <div>
-            <header>
-                <nav className="navbar">
-                    {/* Hamburger Menu */}
-                    <div className="hamburger-menu" onClick={toggleSidebar}>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                    </div>
+            <nav style={{ padding: '20px' }} className="navbar">
+                <a className='text-decoration-none' href="/jobs"><div className="navbar-logo">Job Finder</div></a>
 
-                    {/* Text in the middle */}
-                    <div style={{ color: 'white' }} className="navbar-text">Job Finder</div>
+                {/* For larger screens, navigation links */}
+                <div className="navbar-links">
+                    <a href="/">Home</a>
+                    <a href="/jobs">Jobs</a>
+                    <a href="/aboutposting">Post a Job</a>
+                    <a href="#cv">VIP</a>
+                    <a href="#VIP">Create a CV</a>
+                    <a href="/aboutus">About Us</a>
+                </div>
 
-                    {/* Logo on the right */}
-                    <div className="logo">
-                        <img src="logo.png" alt="Logo" width="100" height="100" />
-                    </div>
-                </nav>
-
-                {/* Sidebar */}
-                <div className={`sidebar ${isSidebarOpen ? 'active' : ''}`}>
-                    <div className="close-btn" onClick={closeSidebar}>×</div> {/* Cross Button */}
-                    <ul>
+                {/* User Dropdown */}
+                <div className="user-dropdown">
+                    <button className="dropdown-btn" onClick={toggleDropdown}>
                         {user ? (
                             <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/addjob"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <li><a href="#"><FaInfoCircle /> Account Settings</a></li>
-                                <li><a className="btn btn-danger" onClick={logout} href="#"><FaInfoCircle /> Logout</a></li>
+                                <i className="fa-solid fa-user me-2"></i>
+                                {(user.displayName?.split(" ")[0])}
+                            </>
+                        ) : (
+                            <div>
+                                <i className="fa-solid fa-user me-2"></i>
+                                guest
+                            </div>
+                        )}
+                    </button>
+                    <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+                        {user ? (
+                            <>
+                                <a href="/settings"><i class="fa-solid fa-gear me-2"></i> Settings</a>
+                                <a href="/savedjobs"><i class="fa-solid fa-bookmark me-2"></i> Your Saves</a>
+                                <a href="/logout" onClick={logout}><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a>
                             </>
                         ) : (
                             <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/addjob"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <div className="auth-buttons">
-                                    <button className="auth-btn signup-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/signup">Signup</a></button>
-                                    <button className="auth-btn signin-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/login">Sign In</a></button>
-                                </div>
+                                <a href="/login"><i class="fa-solid fa-right-to-bracket me-2"></i> Login</a>
+                                <a href="/signup"><i class="fa-solid fa-user-plus me-2"></i> signup</a>
                             </>
                         )}
-                    </ul>
+                    </div>
                 </div>
-                {/* Overlay for closing sidebar when clicked outside */}
-                {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
-            </header>
-            {/* Job Listings */}
-            <br /><br /><br />
-            <div style={{ marginTop: '300px' }} className="container mt-5">
-                <h1 style={{ textAlign: 'center' }}>Favorite Jobs</h1>
-                <h5 style={{ color: 'green', fontWeight: 'normal', marginBottom: '20px', marginTop: '20px' }}>Jobs Saved {jobs.length}</h5>
+
+                {/* Hamburger menu for smaller screens */}
+                <GiHamburgerMenu
+                    className="hamburger-icon"
+                    onClick={toggleSidebar}
+                    size={35}
+                />
+
+                {/* Sidebar for mobile */}
+                <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+                    <div style={{ marginRight: '20px' }} className="sidebar-header">
+                        <span></span>
+                        <i className="fas fa-times close-icon" onClick={toggleSidebar}></i>
+                    </div>
+                    <a href="#home">
+                        <i className="fa-solid fa-house me-2"></i> Home
+                    </a>
+                    <a href="#jobs">
+                        <i className="fas fa-briefcase me-2"></i> Jobs
+                    </a>
+                    <a href="#post">
+                        <i className="fa-solid fa-plus me-2"></i> Post a Job
+                    </a>
+                    <a href="#cv">
+                        <i className="fas fa-file-alt me-2"></i> Create a CV
+                    </a>
+                    <a href="/aboutus">
+                        <i className="fas fa-info-circle me-2"></i> About Us
+                    </a>
+                </div>
+            </nav>
+
+            <h2 className='text-center text-white mt-5'>your saved jobs</h2>
+            <p className='text-center text-white mt-4'><b>{jobs.length}</b> saved jobs</p>
+
+            <div className="container mt-4">
                 <div className="row">
                     {jobs.length > 0 ? (
                         jobs.map((job) => (
-                            <div className="col-md-4 mb-4" key={job._id}>
-                                <div style={{ backgroundColor: '#1e293b', color: 'white' }} className="card">
-                                    <div className="card-body card-fade-border" style={{ height: '300px', overflowY: 'hidden' }}>
-                                        <h5 className="card-title mb-4">
-                                            <FaBriefcase /> <b>Title: </b> {job.title}
-                                        </h5>
-                                        <p className="card-text">
-                                            <FaBuilding /> <b>Company: </b> {job.company}
+                            <div className="col-md-6 mb-4" key={job._id}>
+                                <div style={{ backgroundColor: '#272c39', color: 'white' }} className="card">
+                                    <div className="card-body mt-3 card-fade-border" style={{ height: '280px', overflowY: 'hidden' }}>
+                                        <div className='d-flex justify-content-between'>
+                                            <h2 style={{ marginBottom: '13px' }}>
+                                                <span style={{ color: '#5CA9F7' }} className='me-2 font-size-md'><i class="fas fa-user-tie"></i></span> {job.title}
+                                            </h2>
+                                            <i
+                                                onClick={() => isJobSaved(job._id) ? unSaveJobs(job._id) : saveJobs(job._id)}
+                                                style={{ fontSize: '28px', cursor: 'pointer' }}
+                                                className={`fa-${isJobSaved(job._id) ? 'solid' : 'regular'} fa-bookmark me-2`}
+                                            />
+
+                                        </div>
+                                        <p style={{ fontSize: '17px' }} className="card-text">
+                                            <i style={{ color: '#FFD700' }} class="fas fa-building me-2"></i> <b> Company  </b> : {job.company}
+                                            <span className='ms-3'><i style={{ color: '#FF0000' }} class="fa-solid fa-location-dot me-2"></i> <b>Location </b> : {job.location}</span>
                                         </p>
-                                        <p className="card-text">
-                                            <FaMapMarkerAlt /> <b>Location: </b> {job.location}
+                                        <p style={{ fontSize: '17px' }} className="card-text mt-2">
+                                            <i style={{ color: '#4682B4' }} class="fa-solid fa-briefcase me-2"></i>
+                                            <b>Experience</b> : {job.yearsOfExp}
+                                            <span className='ms-2'><i style={{ color: '#228B22' }} class="fa-solid fa-phone me-2"></i>
+                                                <b>Contact</b> : <span style={{ fontSize: '18px' }}>{job.companyNumber}</span> </span>
                                         </p>
-                                        <p className="card-text mb-0">
-                                            <FaFileAlt /> <b>Description: </b>
+                                        <p style={{ fontSize: '17px' }} className="card-text">
+
+                                        </p>
+                                        <p style={{ fontSize: '17px' }} className="card-text mb-0 mt-2">
+                                            <b >Description : </b>
                                             <span
                                                 dangerouslySetInnerHTML={{
                                                     __html: formatDescription(job.description),
@@ -270,7 +345,7 @@ const Savedjobs = () => {
                                         </p>
                                     </div>
 
-                                    <div className="card-footer d-flex justify-content-between">
+                                    <div className="card-footer d-flex justify-content-between mx-3 align-items-center">
                                         <StyledWrapper>
                                             <button onClick={() => viewJobDetails(job._id)}>
                                                 View Job <div className="arrow-wrapper">
@@ -278,16 +353,17 @@ const Savedjobs = () => {
                                                 </div>
                                             </button>
                                         </StyledWrapper>
-
                                         <p className="card-text">
-                                            <FaCalendarAlt /> {formatDate(job.postedAt)}
+                                            <i class="fa-solid fa-clock me-2"></i> {formatDate(job.postedAt)}
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p>No jobs found</p>
+                        <div>
+                            <h3 className='text-center mt-5 text-danger'>No jobs found</h3>
+                        </div>
                     )}
                 </div>
             </div>

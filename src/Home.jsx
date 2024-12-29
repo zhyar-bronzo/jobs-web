@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { FaBriefcase, FaFileAlt, FaPlusCircle, FaHome, FaInfoCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import './home.css';
+import './tailwind.css';
+import { Instagram, Facebook, Twitter } from 'lucide-react';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import './Navbar.css';
 import axios from 'axios';
 
 const Home = () => {
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const [scrollProgress, setScrollProgress] = useState(0); // State for scroll progress
-    const toggleSidebar = () => {
-        setSidebarOpen(!isSidebarOpen);
-    };
-
-    const closeSidebar = () => {
-        setSidebarOpen(false);
-    };
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const toggleSidebar = () => setShowSidebar(!showSidebar);
+    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
     const deleteCookie = (name) => {
         document.cookie = `${name}=; Max-Age=0; path=/;`;
@@ -102,62 +101,84 @@ const Home = () => {
                     transition: 'width 0.1s ease-out',
                 }}
             ></div>
-            <header>
-                <nav className="navbar">
-                    {/* Hamburger Menu */}
-                    <div className="hamburger-menu" onClick={toggleSidebar}>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                    </div>
+            <nav style={{ padding: '20px' }} className="navbar">
+                <a className='text-decoration-none' href="/jobs"><div className="navbar-logo">Job Finder</div></a>
 
-                    {/* Text in the middle */}
-                    <div style={{ color: 'white' }} className="navbar-text">Job Finder</div>
+                {/* For larger screens, navigation links */}
+                <div className="navbar-links">
+                    <a href="/">Home</a>
+                    <a href="/jobs">Jobs</a>
+                    <a href="/aboutposting">Post a Job</a>
+                    <a href="#cv">Create a CV</a>
+                    <a href="/aboutus">About Us</a>
+                </div>
 
-                    {/* Logo on the right */}
-                    <div className="logo">
-                        <img src="logo.png" alt="Logo" width="100" height="100" />
-                    </div>
-                </nav>
-
-                {/* Sidebar */}
-                <div className={`sidebar ${isSidebarOpen ? 'active' : ''}`}>
-                    <div className="close-btn" onClick={closeSidebar}>×</div>
-                    <ul>
+                {/* User Dropdown */}
+                <div className="user-dropdown">
+                    <button className="dropdown-btn" onClick={toggleDropdown}>
                         {user ? (
                             <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/aboutposting"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <li><a href="#"><FaInfoCircle /> Account Settings</a></li>
-                                <li><a className="btn btn-danger" onClick={logout} href="#"><FaInfoCircle /> Logout</a></li>
+                                <i className="fa-solid fa-user me-2"></i>
+                                {(user.displayName?.split(" ")[0])}
+                            </>
+                        ) : (
+                            <div>
+                                <i className="fa-solid fa-user me-2"></i>
+                                guest
+                            </div>
+                        )}
+                    </button>
+                    <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+                        {user ? (
+                            <>
+                                <a href="/settings"><i class="fa-solid fa-gear me-2"></i> Settings</a>
+                                <a href="/savedjobs"><i class="fa-solid fa-bookmark me-2"></i> Your Saves</a>
+                                <a href="/logout" onClick={logout}><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a>
                             </>
                         ) : (
                             <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/aboutposting"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <div className="auth-buttons">
-                                    <button className="auth-btn signup-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/signup">Signup</a></button>
-                                    <button className="auth-btn signin-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/login">Sign In</a></button>
-                                </div>
+                                <a href="/login"><i class="fa-solid fa-right-to-bracket me-2"></i> Login</a>
+                                <a href="/signup"><i class="fa-solid fa-user-plus me-2"></i> signup</a>
                             </>
                         )}
-                    </ul>
+                    </div>
                 </div>
-                {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
-            </header><br /><br />
 
+                {/* Hamburger menu for smaller screens */}
+                <GiHamburgerMenu
+                    className="hamburger-icon"
+                    onClick={toggleSidebar}
+                    size={35}
+                />
+
+                {/* Sidebar for mobile */}
+                <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+                    <div style={{ marginRight: '20px' }} className="sidebar-header">
+                        <span></span>
+                        <i className="fas fa-times close-icon" onClick={toggleSidebar}></i>
+                    </div>
+                    <a href="#home">
+                        <i className="fa-solid fa-house me-2"></i> Home
+                    </a>
+                    <a href="#jobs">
+                        <i className="fas fa-briefcase me-2"></i> Jobs
+                    </a>
+                    <a href="#post">
+                        <i className="fa-solid fa-plus me-2"></i> Post a Job
+                    </a>
+                    <a href="#cv">
+                        <i className="fas fa-file-alt me-2"></i> Create a CV
+                    </a>
+                    <a href="#about">
+                        <i className="fas fa-info-circle me-2"></i> About Us
+                    </a>
+                </div>
+            </nav>
             <div
                 className="d-flex align-items-center justify-content-center text-center text-white bg-dark"
                 style={{
                     minHeight: '100vh', // Ensure the div takes up at least the full viewport height
                     background: "url('background-image.jpg') no-repeat center center / cover",
-                    paddingTop: '3rem', // Adds space above the content, useful for smaller screens with a navbar
                 }}
             >
                 <div className="p-5 bg-dark bg-opacity-75 rounded">
@@ -182,175 +203,118 @@ const Home = () => {
             </div>
 
             {/* Image and Text Sections */}
-            <div className="container my-5">
-                <div className="d-flex align-items-center justify-content-center mb-4">
-                    <div className="flex-grow-1 border-bottom border-2" style={{ height: '2px' }}></div>
-                    <h2 className="mx-3 mb-0 fw-bold">Why Choose Us</h2>
-                    <div className="flex-grow-1 border-bottom border-2" style={{ height: '2px' }}></div>
-                </div>
-                <br />
-                <div className="row align-items-center mb-5">
-                    <div className="col-md-6">
-                        <img src="7.webp" alt="Job Search" className="img-fluid rounded" />
+            <div className='contentandimgs'>
+                <div className="container">
+                    <div className="d-flex align-items-center justify-content-center mb-4">
+                        <div className="flex-grow-1 mt-5 border-bottom border-2" style={{ height: '2px' }}></div>
+                        <h2 style={{ fontSize: '2rem' }} className="mx-3 mt-5 mb-0 fw-bold">Why Choose Us</h2>
+                        <div className="flex-grow-1  mt-5 border-bottom border-2" style={{ height: '2px' }}></div>
                     </div>
-                    <div className="col-md-6">
-                        <h2 className="mb-3 mb-sm-4 mb-md-0"> Tired of looking for a job?</h2>
-                        <p>
-                            Finding the right job can feel exhausting, going from place to place, applying endlessly, and facing rejections. With us, you don’t need to struggle anymore. Our platform connects you directly to top employers, saving you time, effort, and stress. Let us make your job search easier and more effective.
-                        </p>
+                    <br />
+                    <div className="row align-items-center mb-5">
+                        <div className="col-md-6">
+                            <img src="7.webp" alt="Job Search" className="img-fluid rounded" />
+                        </div>
+                        <div className="col-md-6">
+                            <h2 className="mb-3 mb-sm-4 mb-md-0"> Tired of looking for a job?</h2>
+                            <p>
+                                Finding the right job can feel exhausting, going from place to place, applying endlessly, and facing rejections. With us, you don’t need to struggle anymore. Our platform connects you directly to top employers, saving you time, effort, and stress. Let us make your job search easier and more effective.
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div className="row align-items-center">
-                    <div className="col-md-6 order-md-2">
-                        <img src="workfromhome.jpg" alt="Career Growth" className="img-fluid rounded" />
-                    </div>
-                    <div className="col-md-6 order-md-1">
-                        <h2 className="mb-3 mb-sm-4 mb-md-0">Find Jobs Easier</h2>
-                        <p>
-                            On our website, you can filter jobs based on your preferences, whether it’s the job type, location, salary, or industry. This makes it simple to find opportunities that match your skills and needs, all in one place. Start searching today and discover how easy job hunting can be!
-                        </p>
+                    <div className="row align-items-center ">
+                        <div className="col-md-6 order-md-2">
+                            <img src="workfromhome.jpg" alt="Career Growth" className="img-fluid rounded mb-5" />
+                        </div>
+                        <div className="col-md-6 order-md-1">
+                            <h2 className="mb-3 mb-sm-4 mb-md-0">Find Jobs Easier</h2>
+                            <p>
+                                On our website, you can filter jobs based on your preferences, whether it’s the job type, location, salary, or industry. This makes it simple to find opportunities that match your skills and needs, all in one place. Start searching today and discover how easy job hunting can be!
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-
-            <footer className="bg-dark text-white pt-3">
-                <div className="container">
-                    <div className="row pt-2">
-                        <div className="col-md-3">
-                            <h5>About Us</h5>
-                            <p>
-                                We connect you to your dream job by offering tailored job listings
-                                and a seamless application process.
+            <footer className="footer">
+                <div className="footer-container">
+                    {/* Main Content */}
+                    <div className="footer-main">
+                        {/* Left Section */}
+                        <div className="footer-about">
+                            <h3 className="footer-title">
+                                About Us
+                                <span className="title-underline"></span>
+                            </h3>
+                            <p className="footer-description">
+                                We are dedicated to delivering exceptional digital experiences through innovative solutions and cutting-edge technology, empowering businesses to thrive.
                             </p>
-                            <img
-                                src="favicon.ico"
-                                alt="Logo"
-                                className="img-fluid mt-3"
-                                style={{ maxWidth: "150px", display: "block", margin: "0 auto" }}
-                            />
                         </div>
 
-                        <div className="col-md-3">
-                            <h5>Company</h5>
-                            <ul className="list-unstyled">
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        About Us
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Our Services
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Privacy Policy
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Affiliate Program
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div className="col-md-3 ">
-                            <h5>Get Help</h5>
-                            <ul className="list-unstyled">
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        FAQ
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Shipping
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Returns
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Order Status
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Payment Options
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div className="col-md-3">
-                            <h5>Online Shop</h5>
-                            <ul className="list-unstyled">
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Watch
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Bag
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Shoes
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-white text-decoration-none">
-                                        Dress
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="row align-items-center">
-                        <div className="col-md-12 text-end">
-                            <h5>Follow Us</h5>
-                            <div className="d-flex justify-content-end align-items-center">
-                                <a
-                                    href="#"
-                                    className="text-white me-3"
-                                    style={{ fontSize: "1.8rem" }}
-                                >
-                                    <i className="fab fa-facebook-f"></i>
-                                </a>
-                                <a
-                                    href="#"
-                                    className="text-white me-3"
-                                    style={{ fontSize: "1.8rem" }}
-                                >
-                                    <i className="fab fa-twitter"></i>
-                                </a>
-                                <a
-                                    href="#"
-                                    className="text-white me-3"
-                                    style={{ fontSize: "1.8rem" }}
-                                >
-                                    <i className="fab fa-instagram"></i>
-                                </a>
-                                <a href="#" className="text-white" style={{ fontSize: "1.8rem" }}>
-                                    <i className="fab fa-linkedin-in"></i>
-                                </a>
+                        {/* Right Section - Quick Links */}
+                        <div className="footer-links">
+                            <div className="footer-links-row">
+                                {['Products', 'Resources'].map((section) => (
+                                    <div key={section} className="footer-section">
+                                        <h4 className="section-title">
+                                            {section}
+                                            <span className="title-underline"></span>
+                                        </h4>
+                                        <nav className="section-links">
+                                            {['Link 1', 'Link 2', 'Link 3', 'Link 4'].map(item => (
+                                                <a key={item} href="#" className="footer-link">
+                                                    <span className="link-bullet"></span>
+                                                    {item}
+                                                </a>
+                                            ))}
+                                        </nav>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="footer-section company-section">
+                                <h4 className="section-title">
+                                    Company
+                                    <span className="title-underline"></span>
+                                </h4>
+                                <nav className="section-links">
+                                    {['Link 1', 'Link 2', 'Link 3', 'Link 4'].map(item => (
+                                        <a key={item} href="#" className="footer-link">
+                                            <span className="link-bullet"></span>
+                                            {item}
+                                        </a>
+                                    ))}
+                                </nav>
                             </div>
                         </div>
                     </div>
 
+                    {/* Social Media Section */}
+                    <div className="social-section">
+                        <span className="social-text">Follow us on:</span>
+                        <div className="social-icons">
+                            {[
+                                { Icon: Instagram, color: '#E4405F' },
+                                { Icon: Facebook, color: '#1877F2' },
+                                { Icon: Twitter, color: '#1DA1F2' }
+                            ].map(({ Icon, color }, index) => (
+                                <a
+                                    key={index}
+                                    href="#"
+                                    className="social-icon"
+                                    style={{ '--hover-color': color }}
+                                >
+                                    <Icon size={20} />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
 
-                    <hr className="border-light" />
-                    <div className="text-center pb-1">
-                        <p>2024 &copy; All Rights Reserved to Zhyar</p>
+                    {/* Bottom Section */}
+                    <div className="footer-bottom">
+                        <div className="logo">LC</div>
+                        <div className="copyright">
+                            © 2024 Your Company. All rights reserved.
+                        </div>
                     </div>
                 </div>
             </footer>

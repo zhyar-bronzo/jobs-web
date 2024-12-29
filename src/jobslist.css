@@ -1,4 +1,23 @@
 /* Sliding filter menu */
+
+body {
+    background-color: #212529 !important;
+}
+
+.bgbody {
+    background-color: #212529 !important;
+}
+
+h2 {
+    font-size: 2rem !important;
+    font-weight: bold !important;
+}
+
+.fa-xmark{
+    font-size: 1.7rem;
+    cursor: pointer;
+}
+
 .filter-btn {
     font-size: 1.1rem;
 }
@@ -69,14 +88,40 @@ hr {
 }
 
 .card {
-  border-radius: 8px;
+    border-radius: 8px;
 }
 
 .card-body {
-  line-height: 1.6;
+    line-height: 1.6;
 }
 
 .card-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* From Uiverse.io by Yaseen549 */
+.input {
+    color: white;
+    border: 2px solid #8707ff;
+    border-radius: 10px;
+    padding: 10px 25px;
+    background: transparent;
+    width: 400px;
+    margin-right: 10px;
+}
+
+.input:active {
+    box-shadow: 2px 2px 15px #8707ff inset;
+}
+
+.filterbtn:hover {
+    background-color: #8619eb !important;
+}
+
+@media (max-width: 768px) {
+    .input {
+        padding: 10px 25px;
+        width: 300px;
+    }
 }

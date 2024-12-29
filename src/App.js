@@ -8,6 +8,8 @@ import SignupForm from './SignupForm';
 import Emailverification from './Emailverification';
 import PasswordReset from './PasswordReset';
 import Home from './Home';
+import Aboutus from './Aboutus';
+import SettingsPage from './SettingsPage';
 import NavigationBar from './NavigationBar';
 import Savedjobs from './Savedjobs';
 import Prepostjob from './Prepostjob';
@@ -29,6 +31,8 @@ const App = () => {
           <Route path='/passwordreset' element={<PasswordReset />} />
           <Route path="/savedjobs" element={<Savedjobs />} />
           <Route path="/signupgoogle" element={<SignUpGoogle />} />
+          <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/aboutposting" element={<Prepostjob />} />
           <Route path="/test" element={<NavigationBar />} />
           <Route path="*" element={<NotFound />} />

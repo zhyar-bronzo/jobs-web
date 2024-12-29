@@ -4,10 +4,8 @@ import axios from 'axios';
 import { Slide, ToastContainer, toast } from 'react-toastify';
 import '../node_modules/react-toastify/dist/ReactToastify.css';
 import './passwordreset.css';
-import useAuthRedirect from './ChekingAuth';
 
 const PasswordReset = () => {
-    useAuthRedirect();
     const [email, setEmail] = useState('');
 
     const handleSubmit = async (e) => {
@@ -47,6 +45,9 @@ const PasswordReset = () => {
                         <input
                             type="text"
                             className="form-control"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter Your Email Address"
                             required
                         />

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FaEye, FaEyeSlash, FaHome, FaBriefcase, FaFileAlt, FaPlusCircle, FaInfoCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Eye, EyeOff, ArrowRight } from 'lucide-react';
+import './tailwind.css';
 import { Slide, ToastContainer, toast } from 'react-toastify';
 import '../node_modules/react-toastify/dist/ReactToastify.css';
 import useAuthRedirect from './ChekingAuth';
@@ -154,177 +156,122 @@ const SignupForm = () => {
                 {/* Overlay for closing sidebar when clicked outside */}
                 {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
             </header>
-            <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-light">
-                <h2 className="text-center mb-4">Signup</h2>
-                {/* Row 1 */}
-                <div className="row mb-3">
-                    <div className="col-md-6">
-                        <label htmlFor="fullName" className="form-label">Full Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="fullName"
-                            placeholder="e.g Mohammed Ahmed Ali"
-                            value={formData.fullName}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <label htmlFor="location" className="form-label">Location</label>
-                        <select
-                            className="form-select"
-                            id="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select your location</option>
-                            {locations.map((loc) => (
-                                <option key={loc.value} value={loc.value}>
-                                    {loc.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+                <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-4xl">
+                    <h2 className="text-2xl font-bold text-center mb-8 text-gray-800">Create Account</h2>
 
-                {/* Row 2 */}
-                <div className="row mb-3">
-                    <div className="col-md-6">
-                        <label htmlFor="email" className="form-label">Email Address</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            placeholder="eg. 5oB3W@example.com"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <label className="form-label">Gender</label>
-                        <div className="d-flex align-items-center gap-3">
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="gender"
-                                    id="male"
-                                    value="Male"
-                                    checked={formData.gender === 'Male'}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <label className="form-check-label" htmlFor="male">
-                                    Male
-                                </label>
+                    <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-light">
+                        <h2 className="text-center mb-4">Signup</h2>
+                        {/* Row 1 */}
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <label htmlFor="fullName" className="form-label">Full Name</label>
+                                <input type="text" className="form-control" id="fullName" placeholder="e.g Mohammed Ahmed Ali"
+                                    value={formData.fullName} onChange={handleChange} required />
                             </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="gender"
-                                    id="female"
-                                    value="Female"
-                                    checked={formData.gender === 'Female'}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                <label className="form-check-label" htmlFor="female">
-                                    Female
-                                </label>
+                            <div className="col-md-6">
+                                <label htmlFor="location" className="form-label">Location</label>
+                                <select className="form-select" id="location" value={formData.location} onChange={handleChange} required>
+                                    <option value="">Select your location</option>
+                                    {locations.map((loc) => (
+                                        <option key={loc.value} value={loc.value}>
+                                            {loc.label}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                {/* Row 3 */}
-                <div className="row mb-3">
-                    <div className="col-md-6">
-                        <label htmlFor="degree" className="form-label">Degree (Optional)</label>
-                        <select
-                            className="form-select"
-                            id="degree"
-                            value={formData.degree}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select your degree</option>
-                            {degrees.map((deg, index) => (
-                                <option key={index} value={deg}>
-                                    {deg}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="col-md-6">
-                        <label htmlFor="industry" className="form-label">Industry (Optional)</label>
-                        <select
-                            className="form-select"
-                            id="industry"
-                            value={formData.industry}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select your industry</option>
-                            {industries.map((ind) => (
-                                <option key={ind.value} value={ind.value}>
-                                    {ind.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
+                        {/* Row 2 */}
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <label htmlFor="email" className="form-label">Email Address</label>
+                                <input type="email" className="form-control" id="email" placeholder="eg. 5oB3W@example.com" value={formData.email}
+                                    onChange={handleChange} required />
+                            </div>
+                            <div className="col-md-6">
+                                <label className="form-label">Gender</label>
+                                <div className="d-flex align-items-center gap-3">
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="radio" name="gender" id="male" value="Male"
+                                            checked={formData.gender === 'Male'} onChange={handleChange} required />
+                                        <label className="form-check-label" htmlFor="male">
+                                            Male
+                                        </label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="radio" name="gender" id="female" value="Female"
+                                            checked={formData.gender === 'Female'} onChange={handleChange} required />
+                                        <label className="form-check-label" htmlFor="female">
+                                            Female
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                {/* Row 4 */}
-                <div className="row mb-3">
-                    <div className="col-md-6">
-                        <label htmlFor="role" className="form-label">What are you looking for?</label>
-                        <select
-                            className="form-select"
-                            id="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select an option</option>
-                            <option value="employeeSeeker">Employee Seeker</option>
-                            <option value="jobSeeker">Job Seeker</option>
-                        </select>
-                    </div>
-                    <div className="col-md-6">
-                        <label htmlFor="password" className="form-label">Password</label>
-                        <div className="input-group">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                className="form-control"
-                                id="password"
-                                placeholder="eg. Jobseek@12"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                            />
-                            <button
-                                type="button"
-                                className="btn btn-outline-secondary"
-                                onClick={togglePassword}
-                            >
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        {/* Row 3 */}
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <label htmlFor="degree" className="form-label">Degree (Optional)</label>
+                                <select className="form-select" id="degree" value={formData.degree} onChange={handleChange}>
+                                    <option value="">Select your degree</option>
+                                    {degrees.map((deg, index) => (
+                                        <option key={index} value={deg}>
+                                            {deg}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-md-6">
+                                <label htmlFor="industry" className="form-label">Industry (Optional)</label>
+                                <select className="form-select" id="industry" value={formData.industry} onChange={handleChange}>
+                                    <option value="">Select your industry</option>
+                                    {industries.map((ind) => (
+                                        <option key={ind.value} value={ind.value}>
+                                            {ind.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Row 4 */}
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <label htmlFor="role" className="form-label">What are you looking for?</label>
+                                <select className="form-select" id="role" value={formData.role} onChange={handleChange} required>
+                                    <option value="">Select an option</option>
+                                    <option value="employeeSeeker">Employee Seeker</option>
+                                    <option value="jobSeeker">Job Seeker</option>
+                                </select>
+                            </div>
+                            <div className="col-md-6">
+                                <label htmlFor="password" className="form-label">Password</label>
+                                <div className="input-group">
+                                    <input type={showPassword ? 'text' : 'password'} className="form-control" id="password"
+                                        placeholder="eg. Jobseek@12" value={formData.password} onChange={handleChange} required />
+                                    <button type="button" className="btn btn-outline-secondary" onClick={togglePassword}>
+                                        {showPassword ?
+                                            <FaEyeSlash /> :
+                                            <FaEye />}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <small style={{ textAlign: 'center' }}>Already have an account? <a href="/login">Login</a></small>
+                        <br />
+
+                        {/* Submit Button */}
+                        <div className='text-center'>
+                            <button type="submit" className="btn-submit">
+                                Sign Up
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <br />
-                <small style={{ textAlign: 'center' }}>Already have an account? <a href="/login">Login</a></small>
-                <br />
-
-                {/* Submit Button */}
-                <div className='text-center'>
-                    <button type="submit" className="btn-submit">
-                        Sign Up
-                    </button>
-                </div>
-            </form>
+            </div>
             <ToastContainer position='top-right' />
         </div>
     );

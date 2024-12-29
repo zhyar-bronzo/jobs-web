@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import {  FaBriefcase, FaFileAlt, FaPlusCircle, FaHome, FaInfoCircle } from 'react-icons/fa';
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
 import './Prepostjob.css';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import { useNavigate } from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import axios from 'axios';
+import { FaCrown, FaQuestionCircle, FaExclamationCircle, FaCog } from 'react-icons/fa';
 
 const Prepostjob = () => {
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [isEmployeeSeeker, setIsEmployeeSeeker] = useState(false); // State for checking user role
     const [canPostJob, setCanPostJob] = useState(false); // State to enable/disable button
     const navigate = useNavigate();
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const toggleSidebar = () => setShowSidebar(!showSidebar);
+    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-    const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
-    const closeSidebar = () => setSidebarOpen(false);
 
     const deleteCookie = (name) => {
         document.cookie = `${name}=; Max-Age=0; path=/;`;
@@ -33,7 +35,7 @@ const Prepostjob = () => {
     const handlePostJobClick = () => {
         if (user && isEmployeeSeeker) {
             navigate('/addjob');
-        } 
+        }
     };
 
     useEffect(() => {
@@ -95,56 +97,79 @@ const Prepostjob = () => {
 
     return (
         <div>
-            <header>
-                <nav className="navbar">
-                    <div className="hamburger-menu" onClick={toggleSidebar}>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                        <span className="bar"></span>
-                    </div>
-                    <div className="navbar-text" style={{ color: 'white' }}>
-                        Job Finder
-                    </div>
-                    <div className="logo">
-                        <img src="logo.png" alt="Logo" width="100" height="100" />
-                    </div>
-                </nav>
+            <nav style={{ padding: '20px' }} className="navbar">
+                <a className='text-decoration-none' href="/jobs"><div className="navbar-logo">Job Finder</div></a>
 
-                <div className={`sidebar ${isSidebarOpen ? 'active' : ''}`}>
-                    <div className="close-btn" onClick={closeSidebar}>
-                        ×
-                    </div>
-                    <ul>
+                {/* For larger screens, navigation links */}
+                <div className="navbar-links">
+                    <a href="/">Home</a>
+                    <a href="/jobs">Jobs</a>
+                    <a href="/aboutposting">Post a Job</a>
+                    <a href="#cv">Create a CV</a>
+                    <a href="#about">About Us</a>
+                </div>
+
+                {/* User Dropdown */}
+                <div className="user-dropdown">
+                    <button className="dropdown-btn" onClick={toggleDropdown}>
                         {user ? (
                             <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="#"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/aboutposting"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <li><a href="#"><FaInfoCircle /> Account Settings</a></li>
-                                <li><a className="btn btn-danger" onClick={logout} href="#"><FaInfoCircle /> Logout</a></li>
+                                <i className="fa-solid fa-user me-2"></i>
+                                {(user.displayName?.split(" ")[0]) || 'guest'}
+                            </>
+                        ) : (
+                            'guest'
+                        )}
+                    </button>
+                    <div className={`dropdown-menu ${dropdownOpen ? 'show' : ''}`}>
+                        {user ? (
+                            <>
+                                <a href="#profile"><i class="fa-solid fa-gear me-2"></i> Settings</a>
+                                <a href="/savedjobs"><i class="fa-solid fa-bookmark me-2"></i> Your Saves</a>
+                                <a href="/logout" onClick={logout}><i class="fa-solid fa-right-from-bracket me-2"></i> Logout</a>
                             </>
                         ) : (
                             <>
-                                <li><a href="/"><FaHome /> Home</a></li>
-                                <li><a href="/jobs"><FaBriefcase /> Jobs</a></li>
-                                <li><a href="/aboutposting"><FaFileAlt /> Create Your CV</a></li>
-                                <li><a href="/addjob"><FaPlusCircle /> Post a Job</a></li>
-                                <li><a href="#"><FaInfoCircle /> About Us</a></li>
-                                <div className="auth-buttons">
-                                    <button className="auth-btn signup-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/signup">Signup</a></button>
-                                    <button className="auth-btn signin-btn"><a style={{ textDecoration: 'none', color: 'white' }} href="/login">Sign In</a></button>
-                                </div>
+                                <a href="/login"><i class="fa-solid fa-right-to-bracket me-2"></i> Login</a>
+                                <a href="/signup"><i class="fa-solid fa-user-plus me-2"></i> signup</a>
                             </>
                         )}
-                    </ul>
+                    </div>
                 </div>
-                {isSidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
-            </header>
-            <br /><br />
+
+                {/* Hamburger menu for smaller screens */}
+                <GiHamburgerMenu
+                    className="hamburger-icon"
+                    onClick={toggleSidebar}
+                    size={35}
+                />
+
+                {/* Sidebar for mobile */}
+                <div className={`sidebar ${showSidebar ? 'show' : ''}`}>
+                    <div style={{ marginRight: '20px' }} className="sidebar-header">
+                        <span></span>
+                        <i className="fas fa-times close-icon" onClick={toggleSidebar}></i>
+                    </div>
+                    <a href="#home">
+                        <i className="fa-solid fa-house me-2"></i> Home
+                    </a>
+                    <a href="#jobs">
+                        <i className="fas fa-briefcase me-2"></i> Jobs
+                    </a>
+                    <a href="#post">
+                        <i className="fa-solid fa-plus me-2"></i> Post a Job
+                    </a>
+                    <a href="#cv">
+                        <i className="fas fa-file-alt me-2"></i> Create a CV
+                    </a>
+                    <a href="#about">
+                        <i className="fas fa-info-circle me-2"></i> About Us
+                    </a>
+                </div>
+            </nav>
+
             <div
-                className="d-flex align-items-center justify-content-center text-center text-white bg-dark pt-5">
+                className="d-flex align-items-center justify-content-center text-center text-white bg-dark pt-3">
                 <div className="p-5 bg-dark bg-opacity-75 rounded shadow-lg">
                     <h1 className="display-4 fw-bold mb-4">Find Your Perfect Candidate</h1>
                     <p className="lead mb-4">
@@ -152,7 +177,7 @@ const Prepostjob = () => {
                     </p>
 
                     <button
-                        className="btn w-25 btn-primary btn-lg mt-3 px-4 py-2 shadow-sm transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
+                        className='cool-btn'
                         onClick={handlePostJobClick}
                         disabled={!canPostJob}
                         style={{
@@ -176,15 +201,36 @@ const Prepostjob = () => {
                         </small>
                     )}
 
-                    <div className="mt-4">
-                        <h5 className="fw-bold mb-3">Why Post a Job with Us?</h5>
-                        <ul className="list-unstyled text-start">
-                            <li>🌟 Reach a large network of qualified professionals.</li>
-                            <li>🚀 Post job openings in minutes with an easy-to-use interface.</li>
-                            <li>💼 Connect with candidates who are actively seeking opportunities.</li>
-                            <li>🤝 Enjoy seamless collaboration with candidates through our platform.</li>
-                        </ul>
+                    <div className="text-center mb-4 mt-5">
+                        <h2 style={{ color: '#5CA9F7' }} className="h2 mb-5">About Job Postings</h2>
+                        <div className="row d-flex justify-content-evenly g-4">
+                            <div className="col-md-4">
+                                <div className="card bg-dark border border-secondary h-100">
+                                    <div className="card-body p-4 mt-0 text-white">
+                                        <FaCrown style={{ color: '#5CA9F7' }} className="fas fa-search fa-2x mb-3" />
+                                        <h3 style={{ color: '#5CA9F7' }} className="h5">Bost Your Job</h3>
+                                        <p className="card-text">
+                                            if you want your jobs to be seen by more people, boost your jobs and get more applications. <a className="text-blue-400 text-decoration-underline" href="">learn more</a> about boosting your jobs.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="card bg-dark border border-secondary h-100">
+                                    <div className="card-body p-4 mt-0 text-white">
+                                        <i style={{ color: '#5CA9F7' }} className="fa-solid fa-question fa-2x mb-3"></i>
+                                        <h3 style={{ color: '#5CA9F7' }} className="h5">you dont know how to post a job?</h3>
+                                        <p className="card-text">
+                                           you can contact us and we will help you with the process of posting a job more easily <a className="text-blue-400 text-decoration-underline" href="">learn more</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
+
                 </div>
             </div>
         </div>
