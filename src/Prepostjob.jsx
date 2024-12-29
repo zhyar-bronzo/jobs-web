@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-=======
-import {  FaBriefcase, FaFileAlt, FaPlusCircle, FaHome, FaInfoCircle } from 'react-icons/fa';
->>>>>>> 4f3cf07 (nav)
 import { auth, signOut, onAuthStateChanged } from './FirebaseService';
 import './Prepostjob.css';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -181,11 +177,7 @@ const Prepostjob = () => {
                     </p>
 
                     <button
-<<<<<<< HEAD
                         className='cool-btn'
-=======
-                        className="btn w-25 btn-primary btn-lg mt-3 px-4 py-2 shadow-sm transition-all duration-300 transform hover:scale-105 disabled:opacity-50"
->>>>>>> 4f3cf07 (nav)
                         onClick={handlePostJobClick}
                         disabled={!canPostJob}
                         style={{

@@ -8,11 +8,8 @@ import SignupForm from './SignupForm';
 import Emailverification from './Emailverification';
 import PasswordReset from './PasswordReset';
 import Home from './Home';
-<<<<<<< HEAD
 import Aboutus from './Aboutus';
 import SettingsPage from './SettingsPage';
-=======
->>>>>>> 4f3cf07 (nav)
 import NavigationBar from './NavigationBar';
 import Savedjobs from './Savedjobs';
 import Prepostjob from './Prepostjob';

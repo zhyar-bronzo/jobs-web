@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+./src/job-finder-firebase-adminsdk.json
+
 # production
 /build
 
